@@ -30,7 +30,7 @@ class DualRingLED
     void run(int delay);
     CRGB *innerLEDs;
     CRGB *outerLEDs;
-    void setPattern(dualRingFuncType runFunc);
+    void setRunFunc(dualRingFuncType runFunc);
 
     void fillAll(CRGB color);
     void fillInner(CRGB color);
@@ -49,6 +49,12 @@ class DualRingLED
     void drawInnerCounterClockwiseStreak(int startIndex, int streakSize, CRGB head, CRGB tail);
     void drawOuterClockwiseStreak(int startIndex, int streakSize, CRGB head, CRGB tail);
     void drawOuterCounterClockwiseStreak(int startIndex, int streakSize, CRGB head, CRGB tail);
+    void setPalette(CRGBPalette16 palette);
+    void pulseAll( void );
+    void pulseInner( void );
+    void pulseOuter( void );
+    void waterfall( void );
+
     
     
 
@@ -56,6 +62,8 @@ class DualRingLED
     CRGB             _leds[40];
     dualRingFuncType _runFunc=NULL;
     int              _pin;
+
+    CRGBPalette16    _palette; 
 
     /* I don't think these actually need to be in the class...*/
     void _rotateDownHelper( CRGB *startLed, int num );

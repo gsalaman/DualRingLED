@@ -22,6 +22,29 @@
 
 #define DEFAULT_BRIGHTNESS 30
 
+const TProgmemPalette16 defaultPalette PROGMEM = 
+{
+  CRGB::Black,
+  CRGB::Black,
+  CRGB::Black,
+  CRGB::Black,
+
+  CRGB::Blue,
+  CRGB::Red,
+  CRGB::Yellow,
+  CRGB::Blue,
+
+  CRGB::Blue,
+  CRGB::Red,
+  CRGB::Yellow,
+  CRGB::Blue,
+
+  CRGB::Blue,
+  CRGB::Red,
+  CRGB::Yellow,
+  CRGB::Blue
+};
+
 void DualRingLED::begin( void )
 {
     //  HMMM...Fast LED doesn't like passing pin...must be a template thing.  
@@ -59,6 +82,7 @@ void DualRingLED::begin( void )
 DualRingLED::DualRingLED(int pin)
 {
   _pin = pin;
+  _palette = defaultPalette;
   innerLEDs = _leds;
   outerLEDs = &(_leds[DUAL_RING_NUM_INNER]);
 }
@@ -84,7 +108,7 @@ void DualRingLED::run( int delay_ms )
   FastLED.delay(delay_ms);
 }
 
-void DualRingLED::setPattern(dualRingFuncType func)
+void DualRingLED::setRunFunc(dualRingFuncType func)
 {
   _runFunc = func;
 }
@@ -447,5 +471,48 @@ void DualRingLED::drawOuterClockwiseStreak(int start_index, int streak_size, CRG
    if (start_index < 0) start_index = start_index + DUAL_RING_NUM_OUTER;
    
    _drawStreakHelper(outerLEDs, DUAL_RING_NUM_OUTER, start_index, streak_size, tail, head);
+}
+
+void DualRingLED::setPalette(CRGBPalette16 palette)
+{
+   _palette = palette;
+}
+
+void DualRingLED::pulseAll( void )
+{
+  static uint8_t index;
+  CRGB           color;
+
+  color = ColorFromPalette(_palette, index);
+  fillAll(color);
+
+  index++;
+}
+
+void DualRingLED::pulseInner( void )
+{
+  static uint8_t index;
+  CRGB           color;
+
+  color = ColorFromPalette(_palette, index);
+  fillInner(color);
+
+  index++;
+}
+
+void DualRingLED::pulseOuter( void )
+{
+  static uint8_t index;
+  CRGB           color;
+
+  color = ColorFromPalette(_palette, index);
+  fillOuter(color);
+
+  index++;
+}
+
+void DualRingLED::waterfall( void )
+{
+
 }
 
