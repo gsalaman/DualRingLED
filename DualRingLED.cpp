@@ -516,29 +516,34 @@ void DualRingLED::waterfall( void )
 
   static int paletteIndex = 0;
   int i=0;
-  int inner=0;
+  int inner=8;
 
-  // First cut:  fill outer with 12 consecutive palette entries.
+  // Fill one side of the outer with 12 consecutive palette entries.
+  // Note that we want the index to increase (as we're using it as a palette
+  // reference), but we want to fill outerLEDs from 12 to 0 to make them flow
+  // "down" rather than "up".
   for (i = 0; i < 13; i++)
   {
-     outerLEDs[i] = ColorFromPalette(_palette, i + paletteIndex);
+     outerLEDs[12 - i] = ColorFromPalette(_palette, i + paletteIndex);
 
      // fill inner as well here, but skip every third.  Need to match them though.
+     // Note we're counting from 8 to 0.
      if (i % 3 != 2)
      {
        innerLEDs[inner] = ColorFromPalette(_palette, i + paletteIndex);
-       inner++;
+       inner--;
      }
   }
 
 
-  // and mirror the other half...
+  // now and mirror the other half for outer
   for (i=1; i<12; i++)
   {
     outerLEDs[12 + i] = outerLEDs[12 - i];
   }
 
- 
+
+  //  ...and inner mirror. 
   for (i=1; i<8; i++)
   {
     innerLEDs[8 + i] = innerLEDs[8 - i];
