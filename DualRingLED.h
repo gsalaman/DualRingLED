@@ -73,4 +73,6 @@ class DualRingLED
   
 };
 
+bool DualRingLED_touching(int innerIndex, int outerIndex);
+
 #endif // DUAL_RING_LED_H

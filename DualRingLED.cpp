@@ -554,3 +554,37 @@ void DualRingLED::waterfall( void )
  
 }
 
+// indexed by inner ring index...shows which outer index is considered "touching" with that
+// inner index.
+int _align_pos[] =
+{
+  0,  // I 0
+  22, // I 1
+  21, // I 2
+  19, // I 3
+  18, // I 4
+  17, // I 5
+  15, // I 6
+  14, // I 7
+  12, // I 8
+  11, // I 9
+  9,  // I 10
+  8,  // I 11
+  6,  // I 12
+  4,  // I 13
+  3,  // I 14
+  1   // I 15
+};
+
+bool DualRingLED_touching(int innerIndex, int outerIndex)
+{
+  if (_align_pos[innerIndex] == outerIndex)
+  {
+    return true;
+  }
+  else
+  { 
+    return false;
+  }
+
+}
